@@ -1,0 +1,115 @@
+public class ApplianceDAOImpl implements ApplianceDAO {
+
+  @Override
+  public List<Appliance> find(Criteria criteria) {
+    ApplianceReader reader = new ApplianceReader("appliances.txt");
+    ApplianceMatcher matcher = new ApplianceMatcher();
+    AppliancesFactory factory = new AppliancesFactory();
+    
+    List<String> strAppliancesData = null;
+    List<Appliances> appliances = null;    
+    
+    strAppliancesData = reader.read(criteria.getApplianceType());
+    strAppliancesData = matcher.match(strAppliancesData, criteria);
+
+    appliances = factory.create(strAppliancesData);    
+  }
+
+}
+
+
+class ApplianceReader{
+  private FileReader applianceReader;
+  
+  public ApplianceReader(String filaName) throws FileNotFoundException{
+      applianceReader = ....;
+  }
+  
+  
+  public List<String> read(String applianceType)throws IOException{
+    if(applianceType == null){
+      return readAll();
+    }else{
+      return readWithType(applianceType);
+    }
+  }
+  
+  private List<String> readAll() throws IOException{
+    //...
+  }
+  
+  private List<String> readWithType(String applianceType) throws IOException{
+    // ....
+  }
+
+
+}
+
+class ApplianceMatcher{
+
+  public List<String> match(List<String> appliances, Criteria criteria){
+    List<String> results = new ArrayList<String>();
+    List<String> requests = partMatchFormer(criteria);
+    
+    for(String concreteApplianceData : appliances){
+      if( isMatch(concreteApplianceData, requests) ){
+        results.add(concreteApplianceData);
+      }
+    }
+    
+    return results;  
+  }
+  
+  private List<String> partMatchFormer(Criteria criteria){
+    List<String> requests = new ArrayList<String>();
+    
+    // POWER=45
+  }
+  
+  private boolean isMatch(String applianceData, List<String> requests){
+  
+    for(String request : requests){
+      if(!applianceData.contains(request)){
+        return false;
+      }
+    }
+    
+    return true;  
+  }
+
+
+}
+
+
+class AppliancesFactory(
+
+  public List<Appliance> create(List<String> strAppliancesData){
+    List<Appliance> results = new ArrayList<Appliance>();
+    
+    for(String data : strAppliancesData){
+      results.add(create(data));
+    }
+    
+    return results;
+  
+  }
+  
+  private Appliance create(String data){
+    String[] applianceData = data.split(...);
+    
+    switch(applianceData[0]){
+    case "OVEN" :
+      return createOven(applianceData);
+    case "LAPTOP":
+      return createLaptop(applianceData);
+    /// etc
+    }
+  
+  }
+
+  private Appliance createOven(String[] data){
+    //   ... ... ...
+  }
+
+
+)
